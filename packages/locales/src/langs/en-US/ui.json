@@ -7,6 +7,7 @@
     "length": "{0} must be {1} characters long",
     "alreadyExists": "{0} `{1}` already exists",
     "startWith": "{0} must start with `{1}`",
+    "invalidEmail": "Please input a valid email address",
     "invalidURL": "Please input a valid URL",
     "sizeLimit": "The file size cannot exceed {0}MB",
     "previewWarning": "Unable to open the file, there is no available URL or preview address"
