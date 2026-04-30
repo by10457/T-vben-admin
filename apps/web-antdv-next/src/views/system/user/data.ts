@@ -16,7 +16,10 @@ export function useFormSchema(isEdit: boolean): VbenFormSchema[] {
       rules: z
         .string()
         .min(1, $t('ui.formRules.minLength', [$t('system.user.username'), 1]))
-        .max(30, $t('ui.formRules.maxLength', [$t('system.user.username'), 30])),
+        .max(
+          30,
+          $t('ui.formRules.maxLength', [$t('system.user.username'), 30]),
+        ),
     },
     {
       component: 'Input',
@@ -25,7 +28,10 @@ export function useFormSchema(isEdit: boolean): VbenFormSchema[] {
       rules: z
         .string()
         .min(1, $t('ui.formRules.minLength', [$t('system.user.realName'), 1]))
-        .max(20, $t('ui.formRules.maxLength', [$t('system.user.realName'), 20])),
+        .max(
+          20,
+          $t('ui.formRules.maxLength', [$t('system.user.realName'), 20]),
+        ),
     },
     {
       component: 'Input',
