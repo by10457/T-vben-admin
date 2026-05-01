@@ -1,0 +1,61 @@
+{
+  "title": "System Monitor",
+  "server": {
+    "title": "Server Monitor",
+    "subtitle": "View runtime environment and resource usage of the admin service",
+    "java": {
+      "title": "Java Info",
+      "name": "VM",
+      "version": "Java Version",
+      "vendor": "Vendor",
+      "home": "Home",
+      "startTime": "Start Time",
+      "runTime": "Uptime"
+    },
+    "system": {
+      "title": "System Info",
+      "hostName": "Host",
+      "os": "Operating System",
+      "arch": "Architecture",
+      "userDir": "Project Path"
+    },
+    "cpu": {
+      "system": "System CPU",
+      "process": "Process CPU",
+      "systemTrend": "System CPU Trend",
+      "processTrend": "Process CPU Trend",
+      "waitingForSamples": "Waiting for samples"
+    },
+    "memory": {
+      "jvm": "JVM Memory",
+      "system": "System Memory"
+    },
+    "disk": {
+      "title": "Disk Status",
+      "total": "Total",
+      "free": "Free"
+    },
+    "database": {
+      "title": "Database Monitor",
+      "description": "Database detail monitoring is not enabled on this page"
+    },
+    "redis": {
+      "title": "Redis Monitor",
+      "description": "The system cache page has been removed; Redis detail monitoring is not enabled"
+    }
+  },
+  "loggedIn": {
+    "title": "Logged-in Users",
+    "index": "No.",
+    "nickname": "Nickname",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone",
+    "summary": "Summary",
+    "operation": "Operation",
+    "forceLogout": "Force Logout",
+    "forceLogoutTitle": "Force Logout User",
+    "forceLogoutConfirm": "Force user {0} offline?",
+    "forceLogoutSuccess": "User forced offline"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "title": "系统监控",
+  "server": {
+    "title": "服务监控",
+    "subtitle": "查看当前后端管理服务的运行环境和资源占用",
+    "java": {
+      "title": "Java信息",
+      "name": "虚拟机",
+      "version": "Java版本",
+      "vendor": "供应商",
+      "home": "安装路径",
+      "startTime": "启动时间",
+      "runTime": "运行时长"
+    },
+    "system": {
+      "title": "系统信息",
+      "hostName": "主机名称",
+      "os": "操作系统",
+      "arch": "系统架构",
+      "userDir": "项目路径"
+    },
+    "cpu": {
+      "system": "系统CPU",
+      "process": "进程CPU",
+      "systemTrend": "系统CPU趋势",
+      "processTrend": "进程CPU趋势",
+      "waitingForSamples": "等待自动采样"
+    },
+    "memory": {
+      "jvm": "JVM内存",
+      "system": "系统内存"
+    },
+    "disk": {
+      "title": "磁盘状态",
+      "total": "总容量",
+      "free": "空闲容量"
+    },
+    "database": {
+      "title": "数据库监控",
+      "description": "当前页面不启用数据库细分监控"
+    },
+    "redis": {
+      "title": "Redis监控",
+      "description": "当前不启用Redis细分监控"
+    }
+  },
+  "loggedIn": {
+    "title": "已登录的用户",
+    "index": "序号",
+    "nickname": "昵称",
+    "username": "用户名",
+    "email": "邮箱",
+    "phone": "手机号",
+    "summary": "简介",
+    "operation": "操作",
+    "forceLogout": "强制下线",
+    "forceLogoutTitle": "强制下线用户",
+    "forceLogoutConfirm": "确认强制下线用户 {0} 吗？",
+    "forceLogoutSuccess": "已强制下线"
+  }
+}
