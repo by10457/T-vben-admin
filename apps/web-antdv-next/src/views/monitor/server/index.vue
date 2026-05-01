@@ -3,7 +3,13 @@ import type { EchartsUIType } from '@vben/plugins/echarts';
 
 import type { SystemMonitorApi } from '#/api/system/monitor';
 
-import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef } from 'vue';
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  shallowRef,
+} from 'vue';
 
 import { Page } from '@vben/common-ui';
 import { RotateCw } from '@vben/icons';
@@ -36,13 +42,19 @@ const javaItems = computed(() => [
     label: $t('monitor.server.java.version'),
     value: monitor.value?.java.version,
   },
-  { label: $t('monitor.server.java.vendor'), value: monitor.value?.java.vendor },
+  {
+    label: $t('monitor.server.java.vendor'),
+    value: monitor.value?.java.vendor,
+  },
   { label: $t('monitor.server.java.home'), value: monitor.value?.java.home },
   {
     label: $t('monitor.server.java.startTime'),
     value: monitor.value?.java.startTime,
   },
-  { label: $t('monitor.server.java.runTime'), value: monitor.value?.java.runTime },
+  {
+    label: $t('monitor.server.java.runTime'),
+    value: monitor.value?.java.runTime,
+  },
 ]);
 
 const systemItems = computed(() => [
@@ -239,14 +251,12 @@ onBeforeUnmount(stopAutoRefresh);
 
       <Spin :spinning="loading && !monitor">
         <div class="grid grid-cols-1 gap-4 xl:grid-cols-4 md:grid-cols-2">
-          <Card
-            v-for="item in usageCards"
-            :key="item.label"
-            :bordered="false"
-          >
+          <Card v-for="item in usageCards" :key="item.label" :bordered="false">
             <div class="flex items-center justify-between gap-4">
               <div class="min-w-0">
-                <div class="text-sm text-muted-foreground">{{ item.label }}</div>
+                <div class="text-sm text-muted-foreground">
+                  {{ item.label }}
+                </div>
                 <div class="mt-2 text-xl font-semibold">{{ item.value }}</div>
               </div>
               <Progress
