@@ -21,6 +21,18 @@ import { refreshTokenApi } from './core';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
+const reAuthenticateCodes = new Set([
+  3200, // 请先登陆
+  3201, // 身份验证过期
+  3202, // 会话过期
+  3301, // 用户强制下线
+  3302, // token解析失败
+  3303, // token已过期
+  3304, // 未提供有效的认证信息
+  3308, // 访问令牌不能为空
+  3309, // 访问令牌已过期或无效
+]);
+
 function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   const client = new RequestClient({
     ...options,
@@ -79,6 +91,17 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       successCode: 2000,
     }),
   );
+
+  // 后端认证/Token 失效使用业务状态码返回时，同样进入重新认证流程
+  client.addResponseInterceptor({
+    rejected: async (error) => {
+      const code = error?.response?.data?.code;
+      if (reAuthenticateCodes.has(code)) {
+        await doReAuthenticate();
+      }
+      throw error;
+    },
+  });
 
   // token过期的处理
   client.addResponseInterceptor(

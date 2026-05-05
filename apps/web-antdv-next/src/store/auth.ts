@@ -19,6 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
 
   const loginLoading = ref(false);
+  const isLoggingOut = ref(false);
 
   /**
    * 异步处理登录操作
@@ -78,11 +79,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout(redirect: boolean = true) {
+    if (isLoggingOut.value) {
+      return;
+    }
+    isLoggingOut.value = true;
+
     try {
       await logoutApi();
     } catch {
       // 不做任何处理
+    } finally {
+      isLoggingOut.value = false;
     }
+
     resetAllStores();
     accessStore.setLoginExpired(false);
 
