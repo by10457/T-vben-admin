@@ -10,7 +10,7 @@ export default defineConfig(async () => {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
             // Java 后端管理接口地址
-            target: 'http://localhost:7840/api',
+            target: 'http://localhost:10457/api',
             ws: true,
           },
         },
