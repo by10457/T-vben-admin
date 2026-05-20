@@ -225,6 +225,7 @@ watch(
         :text="userStore.userInfo?.realName"
         description="ann.vben@gmail.com"
         tag-text="Pro"
+        @clear-preferences-and-logout="handleLogout"
         @logout="handleLogout"
       />
     </template>

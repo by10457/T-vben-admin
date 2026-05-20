@@ -29,6 +29,7 @@ function defineApplicationConfig(userConfigPromise?: DefineApplicationOptions) {
       archiverPluginOptions: {},
       compress: false,
       compressTypes: ['brotli', 'gzip'],
+      dayjs: true,
       devtools: true,
       env,
       extraAppConfig: true,

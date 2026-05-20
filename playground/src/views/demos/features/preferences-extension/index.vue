@@ -105,7 +105,7 @@ function applyPreset(type: 'compact' | 'focus' | 'review') {
     },
   };
 
-  updateCustomPreferences<PlaygroundPreferencesExtension>(presetMap[type]);
+  updateCustomPreferences(presetMap[type]);
 }
 
 function getPriorityColor(priority: DemoTaskItem['priority']) {

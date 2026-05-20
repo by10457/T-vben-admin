@@ -201,6 +201,7 @@ function usePreferences() {
       return {
         fixed: false,
         header: false,
+        userDropdown: false,
       };
     }
 
@@ -211,12 +212,15 @@ function usePreferences() {
     const contentIsMaximize = headerHidden && sidebarHidden;
 
     const isHeaderPosition = preferencesButtonPosition === 'header';
+    const isUserDropdownPosition =
+      preferencesButtonPosition === 'user-dropdown';
 
     // 如果设置了固定位置
     if (preferencesButtonPosition !== 'auto') {
       return {
         fixed: preferencesButtonPosition === 'fixed',
         header: isHeaderPosition,
+        userDropdown: isUserDropdownPosition,
       };
     }
 
@@ -230,6 +234,7 @@ function usePreferences() {
     return {
       fixed,
       header: !fixed,
+      userDropdown: !fixed && isUserDropdownPosition,
     };
   });
 

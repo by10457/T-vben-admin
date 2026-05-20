@@ -10,13 +10,11 @@ import type {
   JsonViewerValue,
 } from './types';
 
-import { computed, useAttrs } from 'vue';
-// @ts-expect-error - vue-json-viewer does not expose compatible typings for this import path
-import VueJsonViewerImport from 'vue-json-viewer';
+import { computed, ref, useAttrs } from 'vue';
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
 
 import { $t } from '@vben/locales';
-
-import { isBoolean } from '@vben-core/shared/utils';
 
 import JsonBigint from 'json-bigint';
 
@@ -42,33 +40,46 @@ const emit = defineEmits<{
   valueClick: [value: JsonViewerValue];
 }>();
 
-/** CJS/UMD 在 Vite 下解析为 { default: Component }，需解包否则会出现 missing template or render */
-const VueJsonViewer =
-  (VueJsonViewerImport as { default?: typeof VueJsonViewerImport }).default ??
-  VueJsonViewerImport;
-
 const attrs: SetupContext['attrs'] = useAttrs();
 
-function handleClick(event: MouseEvent) {
-  if (
-    event.target instanceof HTMLElement &&
-    event.target.classList.contains('jv-item')
-  ) {
-    const pathNode = event.target.closest('.jv-push');
-    if (!pathNode || !pathNode.hasAttribute('path')) {
-      return;
-    }
-    const param: JsonViewerValue = {
-      el: event.target,
-      path: pathNode.getAttribute('path') || '',
-      depth: Number(pathNode.getAttribute('depth')) || 0,
-      value: event.target.textContent || undefined,
-    };
+const copiedPath = ref<null | string>(null);
 
-    param.value = JSON.parse(param.value);
-    emit('valueClick', param);
+const copyConfig = computed(() => {
+  return {
+    copiedText: $t('ui.jsonViewer.copied'),
+    copyText: $t('ui.jsonViewer.copy'),
+    timeout: 2000,
+  };
+});
+
+function handleCopy(node: any, defaultCopy: () => void) {
+  defaultCopy();
+  copiedPath.value = node.path;
+  emit('copied', {
+    action: 'copy',
+    text: JSON.stringify(node.content),
+    trigger: node.el ?? document.body,
+  });
+  setTimeout(() => {
+    if (copiedPath.value === node.path) {
+      copiedPath.value = null;
+    }
+  }, copyConfig.value.timeout ?? 2000);
+}
+
+function handleNodeClick(node: any) {
+  if (node.key) {
+    emit('keyClick', String(node.key));
   }
-  emit('click', event);
+
+  if (node.type === 'content') {
+    emit('valueClick', {
+      depth: node.level ?? 0,
+      el: document.body,
+      path: node.path,
+      value: node.content,
+    });
+  }
 }
 
 // 支持显示 bigint 数据，如较长的订单号
@@ -86,30 +97,51 @@ const jsonData = computed<Record<string, any>>(() => {
 });
 
 const bindProps = computed<Recordable<any>>(() => {
-  const copyable = {
-    copyText: $t('ui.jsonViewer.copy'),
-    copiedText: $t('ui.jsonViewer.copied'),
-    timeout: 2000,
-    ...(isBoolean(props.copyable) ? {} : props.copyable),
-  };
+  const prettyTheme =
+    props.theme === 'dark' || props.theme === 'dark-json-theme'
+      ? 'dark'
+      : 'light';
 
   return {
-    ...props,
     ...attrs,
-    value: jsonData.value,
-    onCopied: (event: JsonViewerAction) => emit('copied', event),
-    onKeyclick: (key: string) => emit('keyClick', key),
-    onClick: (event: MouseEvent) => handleClick(event),
-    copyable: props.copyable ? copyable : false,
+    data: jsonData.value,
+    deep: props.expanded ? Infinity : props.expandDepth,
+    showDoubleQuotes: props.showDoubleQuotes,
+    showLine: props.boxed,
+    showLength: true,
+    showIcon: true,
+    theme: prettyTheme,
+    collapsedNodeLength: props.previewMode ? 0 : Infinity,
+    onNodeClick: handleNodeClick,
+    renderNodeActions: !!props.copyable,
   };
 });
 </script>
 <template>
-  <VueJsonViewer v-bind="bindProps">
-    <template #copy="slotProps">
-      <slot name="copy" v-bind="slotProps"></slot>
-    </template>
-  </VueJsonViewer>
+  <div
+    :class="[props.theme, { boxed: props.boxed }]"
+    class="vben-json-viewer"
+    @click="(event) => emit('click', event)"
+  >
+    <VueJsonPretty v-bind="bindProps">
+      <template #renderNodeActions="{ node, defaultActions }">
+        <slot name="copy" :node="node" :default-actions="defaultActions">
+          <span
+            v-if="props.copyable"
+            class="vben-json-copy-btn"
+            :class="[{ 'is-copied': copiedPath === node.path }]"
+            @click.stop="handleCopy(node, defaultActions.copy)"
+          >
+            {{
+              copiedPath === node.path
+                ? copyConfig.copiedText
+                : copyConfig.copyText
+            }}
+          </span>
+        </slot>
+      </template>
+    </VueJsonPretty>
+  </div>
 </template>
 <style lang="scss">
 @use './style.scss';
